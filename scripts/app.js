@@ -6,8 +6,6 @@ let currentFilter = 'all';
 let currentFilterSub = 'all';
 
 
-
-
 const mainPage = document.getElementById('main-page');
 const tilesPage = document.getElementById('tiles-page');
 const subtilesPage = document.getElementById('subtiles-page');
@@ -18,8 +16,6 @@ const mainTilesGrid = document.getElementById('main-tiles-grid');
 const subTilesGrid = document.getElementById('sub-tiles-grid');
 
 
-
-
 const categoryIcons = {
     'Public': '<i class="fa-solid fa-lock-open badge-icon"></i>',
     'Private': '<i class="fa-solid fa-lock badge-icon"></i>',
@@ -27,15 +23,11 @@ const categoryIcons = {
 };
 
 
-
-
 function createTileHTML(tile, hasSubtiles = false, isClickable = true) {
     const categoryClass = tile.category.toLowerCase().replace(/ /g, '-');
     const subtileIndicator = hasSubtiles ? "has-subtiles" : "";
     const iconClass = (tile.icon && tile.icon.trim()) ? tile.icon : DEFAULT_ICON;
     const categoryBadge = `<div class="tile-category-badge ${categoryClass}">${categoryIcons[tile.category] || ''}${tile.category === 'Work in Progress' ? 'WIP' : tile.category}</div>`;
-
-
 
 
     if (hasSubtiles && isClickable) {
@@ -48,15 +40,11 @@ function createTileHTML(tile, hasSubtiles = false, isClickable = true) {
 }
 
 
-
-
 function showPage(pageId) {
     [mainPage, tilesPage, subtilesPage].forEach(p => p.classList.remove('active'));
     document.getElementById(pageId).classList.add('active');
     backButton.classList.toggle('visible', pageId !== 'main-page');
 }
-
-
 
 
 function goBack() {
@@ -76,8 +64,6 @@ function goBack() {
 }
 
 
-
-
 function showTilesForGroup(groupName) {
     currentGroup = groupName;
     navigationStack = ['main'];
@@ -85,8 +71,6 @@ function showTilesForGroup(groupName) {
     const mainTiles = window.tilesData.filter(t => t.type === 'tile' && Array.isArray(t.tags) && t.tags.includes(groupName));
     const tilesWithSubtiles = new Set();
     window.tilesData.forEach(t => { if (t.type === 'sub-tile' && t.parent_id) tilesWithSubtiles.add(t.parent_id); });
-
-
 
     if (mainTiles.length > 0) {
         mainTilesGrid.innerHTML = mainTiles.map(tile => createTileHTML(tile, tilesWithSubtiles.has(tile.id), true)).join('');
@@ -102,12 +86,8 @@ function showTilesForGroup(groupName) {
     }
 
 
-
-
     showPage('tiles-page');
 }
-
-
 
 
 function showSubTilesForParent(parentId) {
@@ -117,8 +97,6 @@ function showSubTilesForParent(parentId) {
     const parentTile = window.tilesData.find(t => t.id === parentId);
     const subTiles = window.tilesData.filter(t => t.type === 'sub-tile' && t.parent_id === parentId && Array.isArray(t.tags) && t.tags.includes(currentGroup));
 
-
-
     if (subTiles.length > 0) {
         subTilesGrid.innerHTML = subTiles.map(tile => createTileHTML(tile, false, false)).join('');
     } else {
@@ -126,17 +104,11 @@ function showSubTilesForParent(parentId) {
     }
 
 
-
-
     showPage('subtiles-page');
 }
 
 
-
-
 backButton.addEventListener('click', goBack);
-
-
 
 
 document.querySelectorAll('.main-group-tile').forEach(btn => {
@@ -145,8 +117,6 @@ document.querySelectorAll('.main-group-tile').forEach(btn => {
         showTilesForGroup(groupName);
     });
 });
-
-
 
 
 console.log("✅ Hub initialised");
